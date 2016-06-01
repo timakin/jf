@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+
+require "kireikirei"
+Kireikirei.execute(ARGV[0])
