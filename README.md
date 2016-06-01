@@ -1,28 +1,15 @@
-# Kireikirei
+Kireikirei
+=====
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/kireikirei`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
-
-## Installation
-
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'kireikirei'
-```
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install kireikirei
+Dead simple JSON Formatter: Kireikirei.
+It attaches pretty-format to json files under current directory.
 
 ## Usage
 
-TODO: Write usage instructions here
+```
+$ kireikirei     # Checking `git-diff`, only untracked files will be formatted.
+$ kireikirei -a  # Format all of json files under `pwd`
+```
 
 ## Development
 
