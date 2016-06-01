@@ -23,4 +23,6 @@ module Kireikirei
       end
     end
   end
+
+  module_function :execute
 end
