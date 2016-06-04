@@ -11,22 +11,16 @@ module Kireikirei
     end
 
     if File.exists?(target.body)
-      if opts["git-diff"]
-        cmd = list_diff_json
-        diff_arr = cmd.split(/$/).map(&:strip)
-        paths = diff_arr
-      else
-        paths = File.directory?(target.body) ? Dir.glob("#{target.body}/**/*.json") : Dir.glob(target.body)
-      end
+      paths = opts["git-diff"] ? get_diff_list.split(/$/).map(&:strip) : get_path_list(target.body)
     else
       assert_file_not_found
       exit
     end
 
     for path in paths
-      next if is_not_json
+      next if is_not_json(path)
       begin
-        rewrite(path, opts)
+        opts["minify"] ? minify(path) : rewrite(path, opts)
       rescue FileParseError => e
         assert_parse_failed
         next
@@ -34,25 +28,35 @@ module Kireikirei
     end
   end
 
-  def self.rewrite(path, opts)
-    file = File.read(path)
-    data_hash = JSON.parse(file.force_encoding("UTF-8"))
-    formatted = JSON.pretty_generate(data_hash).gsub /^$\n/, ''
-    File.write(path, formatted)
+  def self.get_diff_list
+    `git status | egrep "$*.json" | sed -E "s/([^:]+: +)(.*)/\\2/"`
   end
 
-  def self.parse_stdin(stdin, otps)
-    data_hash = JSON.parse(stdin)
-    formatted = JSON.pretty_generate(data_hash).gsub /^$\n/, ''
-    puts formatted
+  def self.get_path_list(path)
+    File.directory?(path) ? Dir.glob("#{path}/**/*.json") : Dir.glob(path)
+  end
+
+  def self.apply_format(target, opts)
+    data_hash = JSON.parse(target)
+    indent = opts["i"] != nil ? " " * opts["i"].to_i : "  "
+    formatted = JSON.pretty_generate(data_hash, {:indent => indent}).gsub /^$\n/, ''
+    return formatted
+  end
+
+  def self.rewrite(path, opts)
+    File.write(path, apply_format(File.read(path).force_encoding("UTF-8"), opts))
+  end
+
+  def self.parse_stdin(stdin, opts)
+    puts apply_format(stdin, opts)
+  end
+
+  def self.minify(path)
+    File.write(path, JSON.parse(File.read(path).force_encoding("UTF-8")).to_json)
   end
 
   def self.is_not_json(path)
     return /.+.json/ !~ path
-  end
-
-  def self.list_diff_json
-    `git status | egrep "$*.json" | sed -E "s/([^:]+: +)(.*)/\\2/"`
   end
 
   def self.assert_file_not_found
