@@ -3,7 +3,16 @@
 require "kireikirei"
 require 'optparse'
 
+module InputProxy
+  def stdin?
+    return File.pipe?(STDIN) || File.select([STDIN], [], [], 0) != nil
+  end
+
+  module_function :stdin?
+end
+
+Target = Struct.new("Target", :is_stdin, :body)
+target = InputProxy.stdin? ? Target.new(true, $stdin.readlines.join("\n")) : Target.new(false, ARGV.last)
 opts = ARGV.getopts("", "git-diff")
-target = ARGV.last
 
 Kireikirei.execute(target, opts)
