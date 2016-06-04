@@ -1,4 +1,9 @@
 #!/usr/bin/env ruby
 
 require "kireikirei"
-Kireikirei.execute(ARGV[0])
+require 'optparse'
+
+opts = ARGV.getopts("", "git-diff")
+target = ARGV.last
+
+Kireikirei.execute(target, opts)
