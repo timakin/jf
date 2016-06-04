@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-require "kireikirei"
+require "jf"
 require 'optparse'
 
 ARG_OPTIONS = ["i:", "git-diff", "minify"]
@@ -17,4 +17,4 @@ Target = Struct.new("Target", :is_stdin, :body)
 target = InputProxy.stdin? ? Target.new(true, $stdin.readlines.join("\n")) : Target.new(false, ARGV.last)
 opts = ARGV.getopts(*ARG_OPTIONS)
 
-Kireikirei.execute(target, opts)
+Jf.execute(target, opts)

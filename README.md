@@ -1,15 +1,25 @@
-Kireikirei
+Jf
 =====
 
-Dead simple JSON Formatter: Kireikirei.
-It attaches pretty-format to json files under current directory.
+Dead simple JSON Formatter
 
-## Usage
+## Example
 
 ```
-$ kireikirei     # Checking `git-diff`, only untracked files will be formatted.
-$ kireikirei -a  # Format all of json files under `pwd`
+$ jf [--git-diff|--minify|-i] raw.json # Attach format to a json file.
+$ jf .                                 # Attach format to all of json files under the current directory.
+$ cat raw.json | jf                    # Output pretty json for the received STDIN.
+> (print pretty json)
 ```
+
+## Options
+
+- --git-diff
+ - Run the command to only git-historically created|modified json file
+- --minify
+ - Compact multi lined json to one line
+- -i {number}
+ - Set the number of indents before the begining of each lines
 
 ## Development
 
@@ -19,7 +29,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/timakin/kireikirei. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/timakin/jf. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 
 ## License

@@ -1,3 +1,3 @@
-module Kireikirei
+module Jf
   VERSION = "0.1.0"
 end

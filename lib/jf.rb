@@ -1,9 +1,9 @@
-require "kireikirei/version"
+require "jf/version"
 require 'json'
 
 class FileParseError < StandardError; end
 
-module Kireikirei
+module Jf
   def self.execute(target, opts)
     if target.is_stdin
       parse_stdin(target.body, opts)
