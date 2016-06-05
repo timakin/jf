@@ -1,4 +1,4 @@
-Jf
+JF
 =====
 
 Dead simple JSON Formatter
