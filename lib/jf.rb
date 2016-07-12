@@ -1,4 +1,5 @@
 require "jf/version"
+require "hash_ext"
 require 'json'
 
 class FileParseError < StandardError; end
@@ -11,7 +12,7 @@ module Jf
     end
 
     if File.exists?(target.body)
-      paths = opts["git-diff"] ? get_diff_list.split(/$/).map(&:strip) : get_path_list(target.body)
+      paths = opts[:gitdiff] ? get_diff_list.split(/$/).map(&:strip) : get_path_list(target.body)
     else
       assert_file_not_found
       exit
@@ -20,7 +21,13 @@ module Jf
     for path in paths
       next if is_not_json(path)
       begin
-        opts["minify"] ? minify(path) : rewrite(path, opts)
+        if opts[:minify]
+          minify(path)
+        elsif opts[:merge]
+          merge(path, opts)
+        else
+          rewrite(path, opts)
+        end
       rescue FileParseError => e
         assert_parse_failed
         next
@@ -38,9 +45,26 @@ module Jf
 
   def self.apply_format(target, opts)
     data_hash = JSON.parse(target)
-    indent = opts["i"] != nil ? " " * opts["i"].to_i : "  "
+    indent = opts[:indent] != nil ? " " * opts[:indent].to_i : "  "
     formatted = JSON.pretty_generate(data_hash, {:indent => indent}).gsub /^$\n/, ''
     return formatted
+  end
+
+  def self.merge(origin, opts)
+    origin_json = JSON.parse(File.read(origin))
+    target_json = JSON.parse(File.read(opts[:merge]))
+    if opts[:after]
+      target_keys = opts[:after].split(".")
+      if target_keys.size == 1
+        File.write(origin, origin_json.insert_after(target_keys[0], target_json).to_json)
+        apply_format(origin, opts)
+      else
+
+      end
+    else
+      File.write(origin, origin_json.merge(target_json))
+      apply_format(origin, opts)
+    end
   end
 
   def self.rewrite(path, opts)

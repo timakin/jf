@@ -6,10 +6,13 @@ Dead simple JSON Formatter
 ## Example
 
 ```
-$ jf [--git-diff|--minify|-i] raw.json # Attach format to a json file.
+$ jf raw.json [--gitdiff|--minify|-i] # Attach format to a json file.
 $ jf .                                 # Attach format to all of json files under the current directory.
 $ cat raw.json | jf                    # Output pretty json for the received STDIN.
 > (print pretty json)
+$ jf origin.json --merge target.json                                  # Push the object of inside of target.json back to the origin.json.
+$ jf origin.json --merge target.json --after key1                     # Push the object of inside of target.json after the "key1" of origin.json.
+$ jf origin.json --merge target.json --after key1.innerkey1.deep.last # Push the object of inside of target.json after the "origin[:key1][:innerkey1][:deep][:lastkey]".
 ```
 
 ## Options
@@ -35,4 +38,3 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/timaki
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
-

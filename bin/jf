@@ -3,7 +3,7 @@
 require "jf"
 require 'optparse'
 
-ARG_OPTIONS = ["i:", "git-diff", "minify"]
+# ARG_OPTIONS = ["i:", "git-diff", "minify", "merge:"]
 
 module InputProxy
   def stdin?
@@ -14,7 +14,17 @@ module InputProxy
 end
 
 Target = Struct.new("Target", :is_stdin, :body)
-target = InputProxy.stdin? ? Target.new(true, $stdin.readlines.join("\n")) : Target.new(false, ARGV.last)
-opts = ARGV.getopts(*ARG_OPTIONS)
+target = InputProxy.stdin? ? Target.new(true, $stdin.readlines.join("\n")) : Target.new(false, ARGV[0])
 
-Jf.execute(target, opts)
+option={}
+OptionParser.new do |opt|
+  opt.on('-i', '--indent=VALUE') {|v| option[:indent] = v }
+  opt.on('',   '--gitdiff')     {|v| option["git-diff"] = v }
+  opt.on('',   '--minify')       {|v| option[:minify] = v }
+  opt.on('',   '--merge=VALUE')  {|v| option[:merge] = v }
+  opt.on('',   '--after=VALUE')  {|v| option[:after] = v }
+
+  opt.parse!(ARGV)
+end
+
+Jf.execute(target, option)
