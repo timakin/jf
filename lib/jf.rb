@@ -57,13 +57,13 @@ module Jf
       target_keys = opts[:after].split(".")
       if target_keys.size == 1
         File.write(origin, origin_json.insert_after(target_keys[0], target_json).to_json)
-        apply_format(origin, opts)
+        rewrite(origin, opts)
       else
 
       end
     else
       File.write(origin, origin_json.merge(target_json))
-      apply_format(origin, opts)
+      rewrite(origin, opts)
     end
   end
 
