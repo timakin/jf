@@ -4,11 +4,6 @@ class Hash
     keys.each_with_object(self.class.new) { |k, hash| hash[k] = self[k] if has_key?(k) }
   end
 
-  # Replaces the hash with only the given keys.
-  # Returns a hash containing the removed key/value pairs.
-  #
-  #   { a: 1, b: 2, c: 3, d: 4 }.slice!(:a, :b)
-  #   # => {:c=>3, :d=>4}
   def slice!(*keys)
     keys.map! { |key| convert_key(key) } if respond_to?(:convert_key, true)
     omit = slice(*self.keys - keys)
@@ -30,5 +25,37 @@ class Hash
     after = self.slice!(*before_keys)
     merged = before.merge(obj).merge(after)
     merged
+  end
+
+  def deep_insert(obj, *keys)
+    current = self[keys.shift]
+    # p obj
+    p keys
+    p self
+    p current
+    p "===================="
+    if keys.size == 1
+      current = obj
+    else
+      case current.class
+      when String
+        self
+      when Array
+        current.each do |i,v|
+          cloned_keys = Marshal.load(Marshal.dump(keys))
+          current[i].deep_insert(obj, cloned_keys)
+        end
+      when Hash
+        if current.has_key?(keys[0])
+          current.deep_insert(obj, keys)
+        else
+          self
+        end
+      else
+        self
+      end
+    end
+    p obj
+    p keys
   end
 end
