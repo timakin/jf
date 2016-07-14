@@ -30,8 +30,11 @@ class Hash
   def deep_insert(obj, *keys)
     current = self[keys.shift]
     # p obj
+    p "keys"
     p keys
+    p "self:"
     p self
+    p "current:"
     p current
     p "===================="
     if keys.size == 1
@@ -39,23 +42,21 @@ class Hash
     else
       case current.class
       when String
-        self
+        p "String"
+        return
       when Array
+        p "Array"
         current.each do |i,v|
           cloned_keys = Marshal.load(Marshal.dump(keys))
           current[i].deep_insert(obj, cloned_keys)
         end
       when Hash
+        p "Hash"
         if current.has_key?(keys[0])
           current.deep_insert(obj, keys)
-        else
-          self
         end
       else
-        self
       end
     end
-    p obj
-    p keys
   end
 end
