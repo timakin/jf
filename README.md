@@ -12,6 +12,8 @@ $ cat raw.json | jf                    # Output pretty json for the received STD
 > (print pretty json)
 $ jf origin.json --merge target.json                                  # Push the object of inside of target.json back to the origin.json.
 $ jf origin.json --merge target.json --after key1                     # Push the object of inside of target.json after the "key1" of origin.json.
+
+# under Development
 $ jf origin.json --merge target.json --after key1.innerkey1.deep.last # Push the object of inside of target.json after the "origin[:key1][:innerkey1][:deep][:lastkey]".
 ```
 
