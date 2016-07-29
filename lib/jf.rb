@@ -64,7 +64,7 @@ module Jf
         p origin_json
       end
     else
-      File.write(origin, origin_json.merge(target_json))
+      File.write(origin, origin_json.merge(target_json).to_json)
       rewrite(origin, opts)
     end
   end
