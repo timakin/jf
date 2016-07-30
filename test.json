@@ -4,11 +4,11 @@
     null
   ],
   "baz": {
-    "foo": [
+    "yoyo": [
       { "obj": "value" },
       { "obj2": "value" },
       { "obj3": "value" }
     ],
-    "baz": "qux"
+    "kiki": "qux"
   }
 }

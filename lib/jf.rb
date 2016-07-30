@@ -62,6 +62,8 @@ module Jf
         origin_json.deep_insert(target_json, *target_keys)
         p "result"
         p origin_json
+        # File.write(origin, origin_json.to_json)
+        # rewrite(origin, opts)
       end
     else
       File.write(origin, origin_json.merge(target_json).to_json)

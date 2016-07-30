@@ -28,17 +28,19 @@ class Hash
   end
 
   def deep_insert(obj, *keys)
-    current = self[keys.shift]
-    # p obj
-    p "keys"
+    p "before shift keys"
     p keys
-    p "self:"
+    current = self[keys.shift]
+    p "whole:"
     p self
     p "current:"
     p current
     p "===================="
     if keys.size == 1
-      current = obj
+      p "last key"
+      p obj
+      current.insert_after(*keys, obj)
+      p current
     else
       case current.class
       when String
