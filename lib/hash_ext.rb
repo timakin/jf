@@ -1,3 +1,16 @@
+class String
+  def numstr_to_i
+    is_int?(self) ? self.to_i : self
+  end
+
+  def is_int?(str)
+    Integer(str)
+    true
+  rescue ArgumentError
+    false
+  end
+end
+
 class Hash
   def slice(*keys)
     keys.map! { |key| convert_key(key) } if respond_to?(:convert_key, true)
@@ -28,15 +41,14 @@ class Hash
   end
 
   def deep_merge(*keys, val)
-    merge_target = keys.inject(self) { |h, k| h[is_int?(k) ? k.to_i : k] }
+    merge_target = keys.inject(self) { |h, k| h[k.numstr_to_i] }
     if keys.size == 1
       self[keys.last] = merge_target.merge(val)
     else
-      last_key = keys.pop
       if merge_target.kind_of?(Array)
-        keys.inject(self) { |h, k| h[is_int?(k) ? k.to_i : k] }[is_int?(last_key) ? last_key.to_i : last_key] = merge_target.push(val)
+        merge_to_array(*keys, merge_target, val)
       else
-        keys.inject(self) { |h, k| h[is_int?(k) ? k.to_i : k] }[is_int?(last_key) ? last_key.to_i : last_key] = merge_target.merge(val)
+        merge_to_hash(*keys, merge_target, val)
       end
     end
     self
@@ -44,10 +56,13 @@ class Hash
 
   private
 
-  def is_int?(str)
-    Integer(str)
-    true
-  rescue ArgumentError
-    false
+  def merge_to_array(*keys, target, val)
+    last_key = keys.pop
+    keys.inject(self) { |h, k| h[k.numstr_to_i] }[last_key.numstr_to_i] = target.push(val)
+  end
+
+  def merge_to_hash(*keys, target, val)
+    last_key = keys.pop
+    keys.inject(self) { |h, k| h[k.numstr_to_i] }[last_key.numstr_to_i] = target.merge(val)
   end
 end
