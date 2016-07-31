@@ -22,7 +22,7 @@ OptionParser.new do |opt|
   opt.on('',   '--gitdiff')     {|v| option["git-diff"] = v }
   opt.on('',   '--minify')       {|v| option[:minify] = v }
   opt.on('',   '--merge=VALUE')  {|v| option[:merge] = v }
-  opt.on('',   '--after=VALUE')  {|v| option[:after] = v }
+  opt.on('',   '--key=VALUE')  {|v| option[:key] = v }
 
   opt.parse!(ARGV)
 end

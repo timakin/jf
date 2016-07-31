@@ -27,38 +27,11 @@ class Hash
     merged
   end
 
-  def deep_insert(obj, *keys)
-    p "before shift keys"
-    p keys
-    current = self[keys.shift]
-    p "whole:"
-    p self
-    p "current:"
-    p current
-    p "===================="
-    if keys.size == 1
-      p "last key"
-      p obj
-      current.insert_after(*keys, obj)
-      p current
+  def deep_insert(*keys, key, val)
+    if keys.empty?
+      self[key] = val
     else
-      case current.class
-      when String
-        p "String"
-        return
-      when Array
-        p "Array"
-        current.each do |i,v|
-          cloned_keys = Marshal.load(Marshal.dump(keys))
-          current[i].deep_insert(obj, cloned_keys)
-        end
-      when Hash
-        p "Hash"
-        if current.has_key?(keys[0])
-          current.deep_insert(obj, keys)
-        end
-      else
-      end
+      keys.inject(self) { |h, k| h[k] }[key] = val
     end
   end
 end
