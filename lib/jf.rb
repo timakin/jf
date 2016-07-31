@@ -1,5 +1,5 @@
 require "jf/version"
-require "hash_ext"
+require "ext"
 require 'json'
 
 class FileParseError < StandardError; end

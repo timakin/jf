@@ -11,6 +11,12 @@ class String
   end
 end
 
+class Array
+  def one?
+    self.size == 1
+  end
+end
+
 class Hash
   def slice(*keys)
     keys.map! { |key| convert_key(key) } if respond_to?(:convert_key, true)
@@ -42,7 +48,7 @@ class Hash
 
   def deep_merge(*keys, val)
     merge_target = keys.inject(self) { |h, k| h[k.numstr_to_i] }
-    if keys.size == 1
+    if keys.one?
       self[keys.last] = merge_target.merge(val)
     else
       if merge_target.kind_of?(Array)
