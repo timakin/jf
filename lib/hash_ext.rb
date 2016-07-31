@@ -28,12 +28,26 @@ class Hash
   end
 
   def deep_merge(*keys, val)
+    merge_target = keys.inject(self) { |h, k| h[is_int?(k) ? k.to_i : k] }
     if keys.size == 1
-      self[keys.last] = keys.inject(self) { |h, k| h[k] }.merge(val)
+      self[keys.last] = merge_target.merge(val)
     else
-      # TODO: for Array
-      keys.inject(self) { |h, k| h[k] }[last_key] = keys.inject(self) { |h, k| h[k] }[last_key].merge(val)
+      last_key = keys.pop
+      if merge_target.kind_of?(Array)
+        keys.inject(self) { |h, k| h[is_int?(k) ? k.to_i : k] }[is_int?(last_key) ? last_key.to_i : last_key] = merge_target.push(val)
+      else
+        keys.inject(self) { |h, k| h[is_int?(k) ? k.to_i : k] }[is_int?(last_key) ? last_key.to_i : last_key] = merge_target.merge(val)
+      end
     end
     self
+  end
+
+  private
+
+  def is_int?(str)
+    Integer(str)
+    true
+  rescue ArgumentError
+    false
   end
 end
