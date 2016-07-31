@@ -27,18 +27,11 @@ class Hash
     merged
   end
 
-  def deep_insert(*keys, key, val)
-    if keys.empty?
-      self[key] = val
-    else
-      keys.inject(self) { |h, k| h[k] }[key] = val
-    end
-  end
-
   def deep_merge(*keys, val)
     if keys.size == 1
       self[keys.last] = keys.inject(self) { |h, k| h[k] }.merge(val)
     else
+      # TODO: for Array
       keys.inject(self) { |h, k| h[k] }[last_key] = keys.inject(self) { |h, k| h[k] }[last_key].merge(val)
     end
     self
