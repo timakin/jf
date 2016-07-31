@@ -39,14 +39,7 @@ class Hash
     if keys.size == 1
       self[keys.last] = keys.inject(self) { |h, k| h[k] }.merge(val)
     else
-      # under development
-      last_key = keys.pop
-      p last_key
-      p keys
-      p self
-      p keys.inject(self) { |h, k| h[k] }.merge(val)
-      p keys.inject(self) { |h, k| h[k] }[last_key]
-      keys.inject(self) { |h, k| h[k] }[last_key] = keys.inject(self) { |h, k| h[k] }.merge(val)
+      keys.inject(self) { |h, k| h[k] }[last_key] = keys.inject(self) { |h, k| h[k] }[last_key].merge(val)
     end
     self
   end
