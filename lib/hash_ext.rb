@@ -34,4 +34,20 @@ class Hash
       keys.inject(self) { |h, k| h[k] }[key] = val
     end
   end
+
+  def deep_merge(*keys, val)
+    if keys.size == 1
+      self[keys.last] = keys.inject(self) { |h, k| h[k] }.merge(val)
+    else
+      # under development
+      last_key = keys.pop
+      p last_key
+      p keys
+      p self
+      p keys.inject(self) { |h, k| h[k] }.merge(val)
+      p keys.inject(self) { |h, k| h[k] }[last_key]
+      keys.inject(self) { |h, k| h[k] }[last_key] = keys.inject(self) { |h, k| h[k] }.merge(val)
+    end
+    self
+  end
 end

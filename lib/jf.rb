@@ -55,16 +55,20 @@ module Jf
     target_json = JSON.parse(File.read(opts[:merge]))
     if opts[:key]
       target_keys = opts[:key].split(".")
-      if target_keys.size == 1
-        origin_json.deep_insert("", target_keys[0], target_json)
+      # if target_keys.size == 1
+        # origin_json[target_keys[0]].merge(target_json)
+        origin_json = origin_json.deep_merge(*target_keys, target_json)
         File.write(origin, origin_json.to_json)
         rewrite(origin, opts)
-      else
-        last_key = target_keys.pop
-        origin_json.deep_insert(*target_keys, last_key, target_json)
-        File.write(origin, origin_json.to_json)
-        rewrite(origin, opts)
-      end
+        # origin_json.deep_insert("", target_keys[0], target_json)
+        # File.write(origin, origin_json.to_json)
+        # rewrite(origin, opts)
+      # else
+      #   last_key = target_keys.pop
+      #   origin_json.deep_insert(*target_keys, last_key, target_json)
+      #   File.write(origin, origin_json.to_json)
+      #   rewrite(origin, opts)
+      # end
     else
       File.write(origin, origin_json.merge(target_json).to_json)
       rewrite(origin, opts)

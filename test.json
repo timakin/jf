@@ -5,10 +5,33 @@
   ],
   "baz": {
     "yoyo": [
-      { "obj": "value" },
-      { "obj2": "value" },
-      { "obj3": "value" }
+      {
+        "obj": "value"
+      },
+      {
+        "obj2": "value"
+      },
+      {
+        "obj3": "value"
+      }
     ],
     "kiki": "qux"
+  },
+  "boooo": {
+    "yoyo": [
+      {
+        "obj": "value"
+      },
+      {
+        "obj2": "value"
+      },
+      {
+        "obj3": "value"
+      }
+    ],
+    "kiki": "qux",
+    "tetetetete": {
+      "aaa": "iii"
+    }
   }
 }
