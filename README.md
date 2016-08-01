@@ -13,8 +13,8 @@ $ cat raw.json | jf                   # Output pretty json for the received STDI
 
 # Merge options
 $ jf origin.json --merge target.json                          # Push the object of inside of target.json back to the origin.json.
-$ jf origin.json --merge target.json --after key1             # Push the object of inside of target.json to "key1" object of origin.json.
-$ jf origin.json --merge target.json --after key1.innerkey1.0 # Push the object of inside of target.json to "origin[:key1][:innerkey1][:deep][0]".
+$ jf origin.json --merge target.json --key key1             # Push the object of inside of target.json to "key1" object of origin.json.
+$ jf origin.json --merge target.json --key key1.innerkey1.0 # Push the object of inside of target.json to "origin[:key1][:innerkey1][:deep][0]".
 ```
 
 ## Options
