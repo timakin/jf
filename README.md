@@ -12,7 +12,7 @@ $ cat raw.json | jf                   # Output pretty json for the received STDI
 > (print pretty json)
 
 # Merge options
-$ jf origin.json --merge target.json                          # Push the object of inside of target.json back to the origin.json.
+$ jf origin.json --merge target.json                        # Push the object of inside of target.json back to the origin.json.
 $ jf origin.json --merge target.json --key key1             # Push the object of inside of target.json to "key1" object of origin.json.
 $ jf origin.json --merge target.json --key key1.innerkey1.0 # Push the object of inside of target.json to "origin[:key1][:innerkey1][:deep][0]".
 ```
@@ -25,6 +25,9 @@ $ jf origin.json --merge target.json --key key1.innerkey1.0 # Push the object of
  - Compact multi lined json to one line
 - -i {number}
  - Set the number of indents before the begining of each lines
+- --merge {target.json} --key {keys}
+ - Merge another json object to the specified json.
+ - It supports deep inside object merge with '--key' option. You can set the option with dot-connected keys.
 
 ## Development
 
