@@ -1,30 +1,30 @@
 #!/usr/bin/env ruby
 
-require "jf"
+require 'jf'
 require 'optparse'
 
 # ARG_OPTIONS = ["i:", "git-diff", "minify", "merge:"]
 
 module InputProxy
-  def stdin?
-    return File.pipe?(STDIN) || File.select([STDIN], [], [], 0) != nil
-  end
+    def stdin?
+        File.pipe?(STDIN) || File.select([STDIN], [], [], 0) != nil
+    end
 
-  module_function :stdin?
+    module_function :stdin?
 end
 
-Target = Struct.new("Target", :is_stdin, :body)
+Target = Struct.new('Target', :is_stdin, :body)
 target = InputProxy.stdin? ? Target.new(true, $stdin.readlines.join("\n")) : Target.new(false, ARGV[0])
 
-option={}
+option = {}
 OptionParser.new do |opt|
-  opt.on('-i', '--indent=VALUE') {|v| option[:indent] = v }
-  opt.on('',   '--gitdiff')     {|v| option["git-diff"] = v }
-  opt.on('',   '--minify')       {|v| option[:minify] = v }
-  opt.on('',   '--merge=VALUE')  {|v| option[:merge] = v }
-  opt.on('',   '--key=VALUE')  {|v| option[:key] = v }
+    opt.on('-i', '--indent=VALUE') { |v| option[:indent] = v }
+    opt.on('',   '--gitdiff') { |v| option['git-diff'] = v }
+    opt.on('',   '--minify')       { |v| option[:minify] = v }
+    opt.on('',   '--merge=VALUE')  { |v| option[:merge] = v }
+    opt.on('',   '--key=VALUE') { |v| option[:key] = v }
 
-  opt.parse!(ARGV)
+    opt.parse!(ARGV)
 end
 
 Jf.execute(target, option)

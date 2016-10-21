@@ -47,6 +47,14 @@ class Hash
     end
 
     def deep_merge(*keys, val)
+        if keys.last == 'all'
+            keys.pop
+            merge_target = keys.inject(self) { |h, k| h[k.numstr_to_i] }
+            merge_target.each_with_index do |value, index|
+                keys.inject(self) { |h, k| h[k.numstr_to_i] }[index] = value.merge(val)
+            end
+            return self
+        end
         merge_target = keys.inject(self) { |h, k| h[k.numstr_to_i] }
         if keys.one?
             self[keys.last] = if self[keys.last].is_a?(Hash)
